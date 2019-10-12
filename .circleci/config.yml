@@ -33,7 +33,7 @@ jobs:
             echo "login done"
 
             set -x
-            image=gcr.io/unity-ads-workshop-test/rasmus-nodejs-docker-webapp
+            image=gcr.io/unity-ads-workshop-test/phoenix-webapp
 
             docker build -t ${image}:${CIRCLE_SHA1} .
             docker push ${image}:${CIRCLE_SHA1}
@@ -61,7 +61,7 @@ jobs:
             gcloud container clusters get-credentials ${WORKSHOP_CLUSTER} --zone ${WORKSHOP_CLUSTER_ZONE} --project ${WORKSHOP_GCP_PROJECT}
             kubectl config current-context
 
-            service=rasmus-nodejs-docker-webapp
+            service=phoenix-webapp
             namespace=workshop
 
             if kubectl get service ${service}-lb -n ${namespace} > /dev/null; then
@@ -76,4 +76,16 @@ jobs:
             kubectl expose deployment -n ${namespace} ${service} --type=LoadBalancer --name=${service}-lb --port=8080
             kubectl get all -n ${namespace} | grep ${service}
             kubectl describe -n ${namespace} service/${service}-lb || true
+  
+  workflows:
+  build_update_deploy:
+    jobs:
+      - build
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build
 

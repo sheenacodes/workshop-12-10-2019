@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: workshop
+  name: phoenix-webapp
+  labels:
+    app: phoenix-webapp
+
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phoenix-webapp
+
+  template:
+    metadata:
+      labels:
+        app: phoenix-webapp
+      annotations:
+    spec:
+      containers:
+        - image: gcr.io/unity-ads-workshop-test/phoenix-webapp:master
+          name: phoenix-webapp
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 0.1
+              memory: 128Mi
+            limits:
+              cpu: 0.5
+              memory: 1024Mi
+          env:
+            - name: SOME_ENV_VARIABLE
+              value: some env value
+
+      nodeSelector:
+        cloud.google.com/gke-nodepool: workshop-pool
