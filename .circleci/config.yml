@@ -31,6 +31,7 @@ jobs:
             gcloud auth activate-service-account ${WORKSHOP_CI_USER} --key-file=.WORKSHOP_CI_ACCOUNT_TOKEN.json >/dev/null 2>&1
             gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io >/dev/null 2>&1
 
-    command: |
-      docker build -t sheenaxyz/node-web-app .
+      - run:
+          command: |
+            docker build -t sheenaxyz/node-web-app .
 
