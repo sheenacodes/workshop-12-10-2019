@@ -9,10 +9,28 @@ jobs:
     docker:
      - image: sheenaxyz/node-web-app
     steps:
-     # install g cloud
-     - gcp-cli install
-     - checkout
-     - run:
-       command: |
-        docker build -t sheenaxyz/node-web-app .
+      # output variables for visibility
+      - run:
+          command: |
+            echo "CIRCLE_BRANCH=$CIRCLE_BRANCH"
+            echo "CIRCLE_JOB=$CIRCLE_JOB"
+            echo "CIRCLE_PROJECT_REPONAME=$CIRCLE_PROJECT_REPONAME"
+            echo "CIRCLE_PROJECT_USERNAME=$CIRCLE_PROJECT_USERNAME"
+            echo "CIRCLE_REPOSITORY_URL=$CIRCLE_REPOSITORY_URL"
+            echo "CIRCLE_USERNAME=$CIRCLE_USERNAME"
+            echo "CIRCLE_SHA1=$CIRCLE_SHA1"
+
+      # install g cloud
+      - gcp-cli install
+      - checkout
+
+      - run:
+          command: |
+            echo Authenticating...
+            echo ${WORKSHOP_CI_ACCOUNT_TOKEN_BASE64} | base64 --decode > .WORKSHOP_CI_ACCOUNT_TOKEN.json
+            gcloud auth activate-service-account ${WORKSHOP_CI_USER} --key-file=.WORKSHOP_CI_ACCOUNT_TOKEN.json >/dev/null 2>&1
+            gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io >/dev/null 2>&1
+
+    command: |
+      docker build -t sheenaxyz/node-web-app .
 
