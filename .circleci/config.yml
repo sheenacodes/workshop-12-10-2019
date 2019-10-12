@@ -21,7 +21,7 @@ jobs:
             echo "CIRCLE_SHA1=$CIRCLE_SHA1"
 
       # install g cloud
-      - gcp-cli install
+      - gcp-cli/install
       - checkout
 
       - run:
@@ -33,5 +33,5 @@ jobs:
 
       - run:
           command: |
-            docker build -t sheenaxyz/node-web-app .
+           docker build -t sheenaxyz/node-web-app .
 
