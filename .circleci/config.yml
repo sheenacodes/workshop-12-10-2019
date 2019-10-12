@@ -3,5 +3,10 @@ jobs:
   build: 
     docker:
      - image: sheenaxyz/node-web-app
-  steps:
+    steps:
+     - gcp-cli install
      - checkout
+     - run:
+       command: |
+        docker build -t sheenaxyz/node-web-app .
+
