@@ -2,4 +2,6 @@ version: 2
 jobs:
   build: 
     docker:
-    - image: sheenaxyz/node-web-app
+     - image: sheenaxyz/node-web-app
+  steps:
+     - checkout
