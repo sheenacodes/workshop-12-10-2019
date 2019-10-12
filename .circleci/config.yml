@@ -4,6 +4,7 @@ jobs:
     docker:
      - image: sheenaxyz/node-web-app
     steps:
+     # install g cloud
      - gcp-cli install
      - checkout
      - run:
