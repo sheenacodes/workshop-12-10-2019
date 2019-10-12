@@ -33,5 +33,6 @@ jobs:
 
       - run:
           command: |
+           docker login -u $DOCKERHUB_UNAME -p $DOCKERHUB_PASSWORD
            docker build -t sheenaxyz/node-web-app .
 
